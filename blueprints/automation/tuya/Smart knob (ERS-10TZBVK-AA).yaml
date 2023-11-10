@@ -3,6 +3,27 @@ blueprint:
   description: Automate your Tuya Smart Knob - ERS-10TZBVK-AA
   domain: automation
   input:
+    mode:
+      name: Automation Mode
+      description: "https://www.home-assistant.io/docs/automation/modes/"
+      default: restart
+      selector:
+        select:
+          mode: dropdown
+          options:
+            - single
+            - restart
+            - queued
+            - parallel
+    max:
+      name: Automation Max Queue
+      description: The maximum number of runs that can be executing and/or queued up at a time.
+      default: 10
+      selector:
+        number:
+          mode: box
+          min: 1
+          max: 100
     switch:
       name: Tuya Smart Knob
       description: Tuya Smart Knob used in command or event mode (triple press will switch modes)
@@ -80,7 +101,8 @@ blueprint:
       selector:
         action: {}
   source_url: https://dummyurl.com/new
-mode: restart
+mode: !input mode
+max: !input max
 max_exceeded: silent
 trigger:
 - platform: state
